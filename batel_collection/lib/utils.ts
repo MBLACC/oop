@@ -1,0 +1,25 @@
+import { type ClassValue, clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
+
+export function formatPrice(price: number | string) {
+    const amount = typeof price === "string" ? parseFloat(price) : price
+    return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    }).format(amount)
+}
+
+export function formatPriceRWF(price: number | string) {
+    const amount = typeof price === "string" ? parseFloat(price) : price
+    const rwfAmount = amount * 1285 // Approx exchange rate
+    return new Intl.NumberFormat("en-RW", {
+        style: "currency",
+        currency: "RWF",
+    }).format(rwfAmount)
+}
+
+export const BUSINESS_LOCATION = "Kigali, Rwanda"
