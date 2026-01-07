@@ -177,10 +177,10 @@ export default function CheckoutPage() {
                         </CardContent>
                     </Card>
 
-                    <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                    <div className="rounded-lg bg-primary p-4 text-sm text-primary-foreground shadow-md">
                         <p className="font-semibold mb-1">Need Help?</p>
                         <p>Contact us at:</p>
-                        <p>📞 <a href="https://wa.me/250722439280" target="_blank" rel="noopener noreferrer" className="hover:underline">0722439280</a></p>
+                        <p>📞 <a href="https://wa.me/250722439280" target="_blank" rel="noopener noreferrer" className="hover:underline font-bold">0722439280</a></p>
                     </div>
                 </div>
             </div>
