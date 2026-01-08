@@ -1,45 +1,87 @@
+"use client"
 
+import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { categories, products } from "@/lib/data";
 import { ProductCard } from "@/components/ProductCard";
 
+const HERO_IMAGES = [
+  "/images/DashBoard_content/1.png",
+  "/images/DashBoard_content/2.png",
+  "/images/DashBoard_content/Mac Strip Down Lipstick Collection.jfif",
+  "/images/DashBoard_content/lip stick victor.png",
+  "/images/DashBoard_content/mascar1.png",
+  "/images/DashBoard_content/perfume2.png",
+];
+
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
   const featuredProducts = products.filter((p) => p.featured);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center text-center text-white">
+      <section className="relative h-[500px] md:h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/DashBoard_content/1.png"
-            alt="Hero Background"
-            fill
-            className="object-cover brightness-[0.6]"
-            priority
-          />
+          {HERO_IMAGES.map((src, index) => (
+            <div
+              key={src}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentImageIndex ? "opacity-100" : "opacity-0"
+                }`}
+            >
+              <Image
+                src={src}
+                alt={`Hero Background ${index + 1}`}
+                fill
+                className="object-cover brightness-[0.5]"
+                priority={index === 0}
+              />
+            </div>
+          ))}
         </div>
+
+        {/* Hero Content */}
         <div className="relative z-10 max-w-2xl px-4 space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          <h1 className="text-3xl md:text-6xl font-bold tracking-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
             Discover Your Unique Style
           </h1>
-          <p className="text-lg md:text-xl text-gray-200">
+          <p className="text-base md:text-xl text-gray-200 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
             Explore the latest trends in women's fashion, accessories, and more at Batel Collection.
           </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/shop">
-              <Button size="lg" className="text-lg px-8">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+            <Link href="/shop" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full text-lg px-8">
                 Shop Now
               </Button>
             </Link>
-            <Link href="/shop?category=accessories">
-              <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent text-white border-white hover:bg-white hover:text-black">
+            <Link href="/shop?category=accessories" className="w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="w-full text-lg px-8 bg-transparent text-white border-white hover:bg-[#514243] hover:border-[#514243]">
                 Explore Accessories
               </Button>
             </Link>
           </div>
+        </div>
+
+        {/* Carousel Indicators */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {HERO_IMAGES.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex ? "bg-white w-6" : "bg-white/50 hover:bg-white/80"
+                }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 

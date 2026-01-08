@@ -6,20 +6,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(price: number | string) {
-    const amount = typeof price === "string" ? parseFloat(price) : price
+    const amountRWF = typeof price === "string" ? parseFloat(price) : price
+    const amountUSD = amountRWF / 1285 // Convert RWF to USD
     return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
-    }).format(amount)
+    }).format(amountUSD)
 }
 
 export function formatPriceRWF(price: number | string) {
-    const amount = typeof price === "string" ? parseFloat(price) : price
-    const rwfAmount = amount * 1285 // Approx exchange rate
+    const amountRWF = typeof price === "string" ? parseFloat(price) : price
     return new Intl.NumberFormat("en-RW", {
         style: "currency",
         currency: "RWF",
-    }).format(rwfAmount)
+        maximumFractionDigits: 0,
+    }).format(amountRWF)
 }
 
 export const BUSINESS_LOCATION = "Kigali, Rwanda"

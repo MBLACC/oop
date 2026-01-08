@@ -21,23 +21,25 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
     return (
         <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg">
-            <div className="aspect-[3/4] overflow-hidden relative group">
-                <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform group-hover:scale-105"
-                />
-                {/* Hover overlay with actions */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Link href={`/product/${product.id}`}>
-                        <Button size="icon" variant="secondary">
-                            <Eye className="h-4 w-4" />
-                            <span className="sr-only">View Details</span>
+            <Link href={`/product/${product.id}`} className="block">
+                <div className="aspect-[3/4] overflow-hidden relative group">
+                    <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        className="object-cover transition-transform group-hover:scale-105"
+                    />
+                    {/* Hover overlay with actions */}
+                    <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <Button size="icon" variant="secondary" asChild>
+                            <div>
+                                <Eye className="h-4 w-4" />
+                                <span className="sr-only">View Details</span>
+                            </div>
                         </Button>
-                    </Link>
+                    </div>
                 </div>
-            </div>
+            </Link>
             <CardHeader className="p-4">
                 <CardTitle className="line-clamp-1 text-base">{product.name}</CardTitle>
                 <p className="text-sm text-muted-foreground capitalize">{product.category}</p>

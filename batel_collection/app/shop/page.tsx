@@ -18,11 +18,13 @@ function ShopContent() {
     const [activeCategory, setActiveCategory] = React.useState<string | null>(
         categoryParam || "all"
     )
+    const [activeSubcategory, setActiveSubcategory] = React.useState<string | null>(null)
     const [sortOption, setSortOption] = React.useState("featured")
 
     // Effect to sync URL param with state
     React.useEffect(() => {
         setActiveCategory(categoryParam || "all")
+        setActiveSubcategory(null) // Reset subcategory when category changes
     }, [categoryParam])
 
     // Filter products
@@ -33,7 +35,20 @@ function ShopContent() {
             filtered = filtered.filter((p) => p.category === activeCategory)
         }
 
+        if ((activeCategory === "accessories" || activeCategory === "in-store" || activeCategory === "shoes") && activeSubcategory) {
+            filtered = filtered.filter((p) => p.subcategory === activeSubcategory)
+        }
+
         return filtered
+    }, [activeCategory, activeSubcategory])
+
+    // Get unique subcategories for active category (accessories or in-store)
+    const activeSubcategories = React.useMemo(() => {
+        if (!activeCategory || activeCategory === "all") return []
+        const subs = products
+            .filter((p) => p.category === activeCategory && p.subcategory)
+            .map((p) => p.subcategory as string)
+        return Array.from(new Set(subs))
     }, [activeCategory])
 
     // Sort products
@@ -79,14 +94,43 @@ function ShopContent() {
                                 All Products
                             </Button>
                             {categories.map((cat) => (
-                                <Button
-                                    key={cat.id}
-                                    variant={activeCategory === cat.id ? "default" : "ghost"}
-                                    className={cn("justify-start", activeCategory === cat.id && "bg-primary text-primary-foreground")}
-                                    onClick={() => setActiveCategory(cat.id)}
-                                >
-                                    {cat.name}
-                                </Button>
+                                <div key={cat.id} className="flex flex-col gap-1 w-full">
+                                    <Button
+                                        variant={activeCategory === cat.id ? "default" : "ghost"}
+                                        className={cn("justify-start", activeCategory === cat.id && "bg-primary text-primary-foreground")}
+                                        onClick={() => {
+                                            setActiveCategory(cat.id)
+                                            setActiveSubcategory(null)
+                                        }}
+                                    >
+                                        {cat.name}
+                                    </Button>
+
+                                    {/* Subcategories for Accessories, In Store, or Shoes */}
+                                    {(cat.id === "accessories" || cat.id === "in-store" || cat.id === "shoes") && activeCategory === cat.id && (
+                                        <div className="ml-4 flex flex-col gap-1 border-l pl-2 py-1">
+                                            <Button
+                                                variant={activeSubcategory === null ? "secondary" : "ghost"}
+                                                size="sm"
+                                                className="justify-start text-xs h-8"
+                                                onClick={() => setActiveSubcategory(null)}
+                                            >
+                                                All {cat.name}
+                                            </Button>
+                                            {activeSubcategories.map((sub) => (
+                                                <Button
+                                                    key={sub}
+                                                    variant={activeSubcategory === sub ? "secondary" : "ghost"}
+                                                    size="sm"
+                                                    className="justify-start text-xs h-8 capitalize"
+                                                    onClick={() => setActiveSubcategory(sub)}
+                                                >
+                                                    {sub}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
                             ))}
                         </div>
                     </div>
