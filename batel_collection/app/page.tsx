@@ -10,10 +10,10 @@ import { ProductCard } from "@/components/ProductCard";
 const HERO_IMAGES = [
   "/images/DashBoard_content/1.png",
   "/images/DashBoard_content/2.png",
-  "/images/DashBoard_content/Mac Strip Down Lipstick Collection.jfif",
-  "/images/DashBoard_content/lip stick victor.png",
+  "/images/DashBoard_content/lipstick_victor.png",
   "/images/DashBoard_content/mascar1.png",
   "/images/DashBoard_content/perfume2.png",
+  "/images/DashBoard_content/11.jpeg",
 ];
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[500px] md:h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-black/40">
           {HERO_IMAGES.map((src, index) => (
             <div
               key={src}
@@ -42,11 +42,13 @@ export default function Home() {
                 src={src}
                 alt={`Hero Background ${index + 1}`}
                 fill
-                className="object-cover brightness-[0.5]"
+                className="object-cover"
                 priority={index === 0}
               />
             </div>
           ))}
+          {/* Constant overlay to ensure text contrast even if images are bright or missing */}
+          <div className="absolute inset-0 bg-black/40 z-10" />
         </div>
 
         {/* Hero Content */}
@@ -64,7 +66,11 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/shop?category=accessories" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full text-lg px-8 bg-transparent text-white border-white hover:bg-[#514243] hover:border-[#514243]">
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full text-lg px-8 bg-transparent text-white border-white hover:bg-[#514243] hover:text-white hover:border-[#514243] transition-colors"
+              >
                 Explore Accessories
               </Button>
             </Link>
